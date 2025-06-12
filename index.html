@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@material/web@1.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --md-sys-color-primary: #0066cc;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #f5f5f7;
+            --md-sys-color-on-surface: #1d1d1f;
+            --md-sys-color-outline: #86868b;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-on-surface);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 500;
+            margin: 0;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .mdc-tab-bar {
+            margin-bottom: 24px;
+            background-color: var(--md-sys-color-surface);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .mdc-card {
+            background-color: var(--md-sys-color-surface);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .mdc-card__content {
+            padding: 24px;
+        }
+
+        .mdc-card__header {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .mdc-card__header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .mdc-text-field {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .mdc-button {
+            text-transform: none;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 0 24px;
+            height: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .stat-card {
+            background: var(--md-sys-color-surface);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--md-sys-color-outline);
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .plot-container {
+            text-align: center;
+            margin: 24px 0;
+            background: var(--md-sys-color-surface);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .plot-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .code-block {
+            background: var(--md-sys-color-surface-variant);
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .api-endpoint {
+            background: var(--md-sys-color-surface-variant);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--md-sys-color-surface-variant);
+            border-top-color: var(--md-sys-color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .mdc-tab {
+            text-transform: none;
+            font-weight: 500;
+        }
+
+        .mdc-tab-indicator {
+            height: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Text Analysis Tool</h1>
+        </div>
+        
+        <div class="mdc-tab-bar" role="tablist">
+            <div class="mdc-tab-scroller">
+                <div class="mdc-tab-scroller__scroll-area">
+                    <div class="mdc-tab-scroller__scroll-content">
+                        <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
+                            <span class="mdc-tab__content">
+                                <span class="mdc-tab__text-label">Text Analyzer</span>
+                            </span>
+                            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                            </span>
+                        </button>
+                        <button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
+                            <span class="mdc-tab__content">
+                                <span class="mdc-tab__text-label">Developer Info</span>
+                            </span>
+                            <span class="mdc-tab-indicator">
+                                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <!-- Analyzer Tab -->
+            <div class="tab-pane active" id="analyzer">
+                <div class="mdc-card">
+                    <div class="mdc-card__content">
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
+                            <textarea id="textInput" class="mdc-text-field__input" rows="6" 
+                                placeholder="Enter your text here..."></textarea>
+                        </div>
+                        <button onclick="analyzeText()" class="mdc-button mdc-button--raised">
+                            <span class="mdc-button__ripple"></span>
+                            <span class="mdc-button__label">Analyze Text</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Analyzing text...</p>
+                </div>
+
+                <div id="results" style="display: none;">
+                    <div class="mdc-card">
+                        <div class="mdc-card__header">
+                            <h3>Basic Statistics</h3>
+                        </div>
+                        <div class="mdc-card__content">
+                            <div id="basicStats" class="stats-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="mdc-card">
+                        <div class="mdc-card__header">
+                            <h3>Sentiment Analysis</h3>
+                        </div>
+                        <div class="mdc-card__content">
+                            <div id="sentimentStats" class="stats-grid"></div>
+                            <div class="plot-container">
+                                <img id="sentimentPlot" alt="Sentiment Distribution">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mdc-card">
+                        <div class="mdc-card__header">
+                            <h3>Word Frequency</h3>
+                        </div>
+                        <div class="mdc-card__content">
+                            <div class="plot-container">
+                                <img id="wordFreqPlot" alt="Word Frequency Distribution">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mdc-card">
+                        <div class="mdc-card__header">
+                            <h3>Top Bigrams</h3>
+                        </div>
+                        <div class="mdc-card__content">
+                            <div id="bigramsList" class="stats-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="mdc-card">
+                        <div class="mdc-card__header">
+                            <h3>Part of Speech Distribution</h3>
+                        </div>
+                        <div class="mdc-card__content">
+                            <div id="posTags" class="stats-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Developer Tab -->
+            <div class="tab-pane" id="developer">
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>API Documentation</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <h4>REST API Endpoint</h4>
+                        <div class="api-endpoint">
+                            <strong>POST /analyze</strong><br>
+                            Content-Type: application/json
+                        </div>
+                        
+                        <h5>Request Format:</h5>
+                        <div class="code-block">
+{
+    "text": "Your text to analyze"
+}
+                        </div>
+
+                        <h5>Response Format:</h5>
+                        <div class="code-block">
+{
+    "basic_stats": {
+        "Total Characters": int,
+        "Total Words": int,
+        "Total Sentences": int,
+        "Average Word Length": float,
+        "Average Sentence Length": float
+    },
+    "sentiment": {
+        "Polarity": float,  // -1 to 1
+        "Subjectivity": float  // 0 to 1
+    },
+    "word_freq": {
+        "word": int,  // frequency count
+        ...
+    },
+    "bigrams": {
+        "('word1', 'word2')": int,  // frequency count
+        ...
+    },
+    "pos_tags": {
+        "TAG": int,  // frequency count
+        ...
+    },
+    "word_freq_plot": "base64_encoded_image",
+    "sentiment_plot": "base64_encoded_image"
+}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Python Integration</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <h4>Using the TextAnalyzer Class</h4>
+                        <div class="code-block">
+from text_analyzer import TextAnalyzer
+
+# Initialize analyzer
+analyzer = TextAnalyzer("Your text here")
+
+# Get basic statistics
+stats = analyzer.get_basic_stats()
+
+# Get sentiment analysis
+sentiment = analyzer.get_sentiment_analysis()
+
+# Get word frequency
+word_freq = analyzer.get_word_frequency(top_n=10)
+
+# Get n-grams
+bigrams = analyzer.get_ngrams(n=2, top_n=10)
+
+# Get POS tags
+pos_tags = analyzer.get_pos_tags()
+                        </div>
+
+                        <h4>Data Processing Pipeline</h4>
+                        <p>The text analysis pipeline includes the following steps:</p>
+                        <ol>
+                            <li>Text tokenization using NLTK's word_tokenize</li>
+                            <li>Sentence segmentation using NLTK's sent_tokenize</li>
+                            <li>Stop word removal and punctuation filtering</li>
+                            <li>Part-of-speech tagging using NLTK's averaged_perceptron_tagger</li>
+                            <li>Sentiment analysis using TextBlob</li>
+                            <li>N-gram generation and frequency counting</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Data Export</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <h4>Exporting Analysis Results</h4>
+                        <div class="code-block">
+import json
+import pandas as pd
+
+# Export as JSON
+with open('analysis_results.json', 'w') as f:
+    json.dump(results, f, indent=2)
+
+# Export as CSV (for word frequency)
+word_freq_df = pd.DataFrame.from_dict(word_freq, orient='index', columns=['frequency'])
+word_freq_df.to_csv('word_frequency.csv')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@material/web@1.0.0/dist/material-components-web.min.js"></script>
+    <script>
+        // Initialize Material Components
+        mdc.autoInit();
+
+        // Tab switching logic
+        const tabs = document.querySelectorAll('.mdc-tab');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                // Update tab states
+                tabs.forEach(t => t.classList.remove('mdc-tab--active'));
+                tab.classList.add('mdc-tab--active');
+
+                // Update tab content
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                tabPanes[index].classList.add('active');
+            });
+        });
+
+        async function analyzeText() {
+            const text = document.getElementById('textInput').value;
+            if (!text.trim()) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while analyzing the text');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            // Display basic stats
+            const basicStatsHtml = Object.entries(data.basic_stats)
+                .map(([key, value]) => `
+                    <div class="stat-card">
+                        <h4>${key}</h4>
+                        <p>${value.toFixed(2)}</p>
+                    </div>
+                `).join('');
+            document.getElementById('basicStats').innerHTML = basicStatsHtml;
+
+            // Display sentiment stats
+            const sentimentHtml = Object.entries(data.sentiment)
+                .map(([key, value]) => `
+                    <div class="stat-card">
+                        <h4>${key}</h4>
+                        <p>${value.toFixed(2)}</p>
+                    </div>
+                `).join('');
+            document.getElementById('sentimentStats').innerHTML = sentimentHtml;
+
+            // Display plots
+            document.getElementById('wordFreqPlot').src = `data:image/png;base64,${data.word_freq_plot}`;
+            document.getElementById('sentimentPlot').src = `data:image/png;base64,${data.sentiment_plot}`;
+
+            // Display bigrams
+            const bigramsHtml = Object.entries(data.bigrams)
+                .map(([bigram, count]) => `
+                    <div class="stat-card">
+                        <h4>${bigram.join(' ')}</h4>
+                        <p>Count: ${count}</p>
+                    </div>
+                `).join('');
+            document.getElementById('bigramsList').innerHTML = bigramsHtml;
+
+            // Display POS tags
+            const posHtml = Object.entries(data.pos_tags)
+                .map(([tag, count]) => `
+                    <div class="stat-card">
+                        <h4>${tag}</h4>
+                        <p>Count: ${count}</p>
+                    </div>
+                `).join('');
+            document.getElementById('posTags').innerHTML = posHtml;
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html> 
