@@ -9,17 +9,42 @@
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <style>
         :root {
-            --surface-color: rgba(255, 255, 255, 0.95);
-            --surface-variant: rgba(245, 245, 247, 0.95);
+            /* Primary Colors */
             --primary-color: #007AFF;
             --primary-light: #47A3FF;
+            --primary-dark: #0055B3;
+            
+            /* Accent Colors */
             --accent-purple: #AF52DE;
             --accent-teal: #5AC8FA;
             --accent-green: #34C759;
             --accent-orange: #FF9500;
+            
+            /* Surface Colors */
+            --surface-color: rgba(255, 255, 255, 0.95);
+            --surface-variant: rgba(245, 245, 247, 0.95);
+            --surface-purple: rgba(175, 82, 222, 0.05);
+            --surface-teal: rgba(90, 200, 250, 0.05);
+            
+            /* Text Colors */
             --on-surface: #1D1D1F;
             --on-surface-secondary: #86868B;
+            --on-surface-tertiary: #8E8E93;
+            
+            /* Background Colors */
             --background: #F5F5F7;
+            --background-gradient-start: #F5F5F7;
+            --background-gradient-end: #FFFFFF;
+            
+            /* Status Colors */
+            --success: #34C759;
+            --warning: #FF9500;
+            --error: #FF3B30;
+            
+            /* Animation */
+            --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --outline: #86868B;
         }
 
         body {
@@ -63,8 +88,8 @@
         .stat-card {
             background: var(--surface-color);
             padding: 1.5rem;
-            border-radius: 6px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease;
         }
 
@@ -74,7 +99,7 @@
         .stat-card:nth-child(4) { border-top: 2px solid var(--accent-orange); }
 
         .stat-card:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .stat-card h3 {
@@ -107,7 +132,7 @@
             color: var(--on-surface-secondary);
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.2s ease;
         }
 
@@ -124,8 +149,8 @@
         .content {
             background: var(--surface-color);
             padding: 2rem;
-            border-radius: 6px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .button {
@@ -133,7 +158,7 @@
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.2s ease;
@@ -176,9 +201,14 @@
             :root {
                 --surface-color: rgba(28, 28, 30, 0.95);
                 --surface-variant: rgba(44, 44, 46, 0.95);
+                --surface-purple: rgba(175, 82, 222, 0.1);
+                --surface-teal: rgba(90, 200, 250, 0.1);
                 --on-surface: #FFFFFF;
                 --on-surface-secondary: #8E8E93;
+                --on-surface-tertiary: #636366;
                 --background: #000000;
+                --background-gradient-start: #000000;
+                --background-gradient-end: #1C1C1E;
             }
 
             .header {
@@ -186,7 +216,7 @@
             }
 
             .stat-card, .content {
-                border-color: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.1);
             }
 
             .tabs {
