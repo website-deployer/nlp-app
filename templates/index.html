@@ -25,7 +25,7 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -492,7 +492,7 @@ word_freq_df.to_csv('word_frequency.csv')
             const bigramsHtml = Object.entries(data.bigrams)
                 .map(([bigram, count]) => `
                     <div class="stat-card">
-                        <h4>${bigram.join(' ')}</h4>
+                        <h4>${bigram}</h4>
                         <p>Count: ${count}</p>
                     </div>
                 `).join('');
