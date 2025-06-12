@@ -676,7 +676,7 @@ word_freq_df.to_csv('word_frequency.csv')
                 .map(([key, value]) => `
                     <div class="stat-card">
                         <h4>${key}</h4>
-                        <p>${value.toFixed(2)}</p>
+                        <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
                     </div>
                 `).join('');
             document.getElementById('basicStats').innerHTML = basicStatsHtml;
@@ -686,34 +686,34 @@ word_freq_df.to_csv('word_frequency.csv')
                 .map(([key, value]) => `
                     <div class="stat-card">
                         <h4>${key}</h4>
-                        <p>${value.toFixed(2)}</p>
+                        <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
                     </div>
                 `).join('');
             document.getElementById('sentimentStats').innerHTML = sentimentHtml;
 
-            // Display plots
-            document.getElementById('wordFreqPlot').src = `data:image/png;base64,${data.word_freq_plot}`;
-            document.getElementById('sentimentPlot').src = `data:image/png;base64,${data.sentiment_plot}`;
+            // Display word frequency
+            const wordFreqHtml = Object.entries(data.word_freq)
+                .map(([word, data]) => `
+                    <div class="stat-card">
+                        <h4>${word}</h4>
+                        <p>Count: ${data.count} (${data.percentage}%)</p>
+                    </div>
+                `).join('');
+            document.getElementById('wordFreqList').innerHTML = wordFreqHtml;
 
             // Display bigrams
             const bigramsHtml = Object.entries(data.bigrams)
-                .map(([bigram, count]) => `
+                .map(([bigram, data]) => `
                     <div class="stat-card">
                         <h4>${bigram}</h4>
-                        <p>Count: ${count}</p>
+                        <p>Count: ${data.count} (${data.percentage}%)</p>
                     </div>
                 `).join('');
             document.getElementById('bigramsList').innerHTML = bigramsHtml;
 
-            // Display POS tags
-            const posHtml = Object.entries(data.pos_tags)
-                .map(([tag, count]) => `
-                    <div class="stat-card">
-                        <h4>${tag}</h4>
-                        <p>Count: ${count}</p>
-                    </div>
-                `).join('');
-            document.getElementById('posTags').innerHTML = posHtml;
+            // Display plots
+            document.getElementById('wordFreqPlot').src = `data:image/png;base64,${data.word_freq_plot}`;
+            document.getElementById('sentimentPlot').src = `data:image/png;base64,${data.sentiment_plot}`;
 
             document.getElementById('results').style.display = 'block';
         }
