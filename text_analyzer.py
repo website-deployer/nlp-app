@@ -25,12 +25,20 @@ class TextAnalyzer:
         
     def get_basic_stats(self):
         """Get basic statistics about the text"""
+        if not self.tokens or not self.sentences:
+            return {
+                'Total Characters': len(self.text),
+                'Total Words': 0,
+                'Total Sentences': 0,
+                'Average Word Length': 0.0,
+                'Average Sentence Length': 0.0
+            }
         stats = {
             'Total Characters': len(self.text),
             'Total Words': len(self.tokens),
             'Total Sentences': len(self.sentences),
-            'Average Word Length': sum(len(word) for word in self.tokens) / len(self.tokens),
-            'Average Sentence Length': len(self.tokens) / len(self.sentences)
+            'Average Word Length': sum(len(word) for word in self.tokens) / len(self.tokens) if self.tokens else 0.0,
+            'Average Sentence Length': len(self.tokens) / len(self.sentences) if self.sentences else 0.0
         }
         return stats
     
@@ -61,24 +69,26 @@ class TextAnalyzer:
         return dict(pos_counts)
     
     def plot_word_frequency(self, top_n=10):
-        """Plot word frequency distribution"""
+        """Plot word frequency distribution and return the figure object"""
         freq_dist = self.get_word_frequency(top_n)
-        plt.figure(figsize=(12, 6))
-        plt.bar(freq_dist.keys(), freq_dist.values())
-        plt.title(f'Top {top_n} Most Common Words')
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.bar(freq_dist.keys(), freq_dist.values())
+        ax.set_title(f'Top {top_n} Most Common Words')
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.show()
+        return plt
     
     def plot_sentiment_distribution(self):
-        """Plot sentiment distribution across sentences"""
-        sentiments = [TextBlob(sentence).sentiment.polarity for sentence in self.sentences]
-        plt.figure(figsize=(10, 6))
-        sns.histplot(sentiments, bins=20)
-        plt.title('Sentiment Distribution Across Sentences')
-        plt.xlabel('Sentiment Polarity')
-        plt.ylabel('Frequency')
-        plt.show()
+        """Plot sentiment distribution across sentences and return the figure object"""
+        sentiments = [TextBlob(sentence).sentiment.polarity for sentence in self.sentences] if self.sentences else []
+        fig, ax = plt.subplots(figsize=(10, 6))
+        if sentiments:
+            sns.histplot(sentiments, bins=20, ax=ax)
+        ax.set_title('Sentiment Distribution Across Sentences')
+        ax.set_xlabel('Sentiment Polarity')
+        ax.set_ylabel('Frequency')
+        plt.tight_layout()
+        return plt
 
 def analyze_text(text):
     """Main function to analyze text and return all statistics"""
