@@ -15,12 +15,13 @@ nltk.download('stopwords')
 
 app = Flask(__name__)
 
-def get_plot_as_base64(plt):
+def get_plot_as_base64(fig):
     buf = BytesIO()
-    plt.savefig(buf, format='png', bbox_inches='tight')
+    fig.savefig(buf, format='png', bbox_inches='tight')
     buf.seek(0)
     img_str = base64.b64encode(buf.read()).decode('utf-8')
-    plt.close()
+    fig.clf()
+    plt.close(fig)
     return img_str
 
 @app.route('/')
