@@ -9,21 +9,47 @@
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <style>
         :root {
+            /* Primary Colors */
             --primary-color: #007AFF;
+            --primary-light: #47A3FF;
+            --primary-dark: #0055B3;
+            
+            /* Accent Colors */
+            --accent-purple: #AF52DE;
+            --accent-teal: #5AC8FA;
+            --accent-green: #34C759;
+            --accent-orange: #FF9500;
+            
+            /* Surface Colors */
             --surface-color: rgba(255, 255, 255, 0.8);
             --surface-variant: rgba(245, 245, 247, 0.8);
+            --surface-purple: rgba(175, 82, 222, 0.1);
+            --surface-teal: rgba(90, 200, 250, 0.1);
+            
+            /* Text Colors */
             --on-surface: #1D1D1F;
-            --outline: #86868B;
+            --on-surface-secondary: #86868B;
+            --on-surface-tertiary: #8E8E93;
+            
+            /* Background Colors */
             --background: #F5F5F7;
+            --background-gradient-start: #F5F5F7;
+            --background-gradient-end: #FFFFFF;
+            
+            /* Status Colors */
             --success: #34C759;
             --warning: #FF9500;
             --error: #FF3B30;
+            
+            /* Animation */
             --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --outline: #86868B;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);
+            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
             color: var(--on-surface);
             margin: 0;
             padding: 0;
@@ -43,7 +69,7 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 24px;
-            background: var(--surface-color);
+            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 20px;
@@ -60,7 +86,7 @@
             font-size: 36px;
             font-weight: 600;
             margin: 0;
-            background: linear-gradient(135deg, #1D1D1F 0%, #434344 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
@@ -68,19 +94,15 @@
 
         .tabs {
             display: flex;
-            background: var(--surface-color);
+            background: linear-gradient(135deg, var(--surface-variant) 0%, rgba(245, 245, 247, 0.9) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 16px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
             margin-bottom: 32px;
             overflow: hidden;
-            padding: 4px;
-            transition: transform 0.3s var(--animation-timing);
-        }
-
-        .tabs:hover {
-            transform: translateY(-1px);
+            padding: 8px;
+            position: relative;
         }
 
         .tab {
@@ -91,22 +113,29 @@
             font-size: 16px;
             font-weight: 500;
             color: var(--outline);
-            transition: all 0.3s var(--animation-timing);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             flex: 1;
             text-align: center;
             position: relative;
             z-index: 1;
+            border-radius: 12px;
+            margin: 0 4px;
         }
 
         .tab.active {
             color: var(--primary-color);
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.95) 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        .tab:not(.active):hover {
+            color: var(--on-surface);
+            background: linear-gradient(135deg, var(--surface-purple) 0%, var(--surface-teal) 100%);
         }
 
         .card {
-            background: var(--surface-color);
+            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 20px;
@@ -155,13 +184,13 @@
 
         .text-area:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 0 3px rgba(90, 200, 250, 0.1);
             transform: translateY(-1px);
         }
 
         .button {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #0066CC 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -178,6 +207,7 @@
         .button:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
         }
 
         .button:active {
@@ -222,7 +252,7 @@
         }
 
         .stat-card {
-            background: var(--surface-color);
+            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             padding: 24px;
@@ -234,6 +264,22 @@
         .stat-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card:nth-child(1) {
+            border-top: 3px solid var(--accent-purple);
+        }
+
+        .stat-card:nth-child(2) {
+            border-top: 3px solid var(--accent-teal);
+        }
+
+        .stat-card:nth-child(3) {
+            border-top: 3px solid var(--accent-green);
+        }
+
+        .stat-card:nth-child(4) {
+            border-top: 3px solid var(--accent-orange);
         }
 
         .stat-card h4 {
@@ -249,7 +295,7 @@
             margin: 0;
             font-size: 32px;
             font-weight: 600;
-            background: linear-gradient(135deg, #1D1D1F 0%, #434344 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -301,7 +347,7 @@
             width: 48px;
             height: 48px;
             border: 3px solid rgba(0, 122, 255, 0.1);
-            border-top-color: var(--primary-color);
+            border-top-color: var(--accent-purple);
             border-radius: 50%;
             animation: spin 1s var(--animation-timing) infinite;
             margin: 0 auto;
@@ -313,16 +359,26 @@
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.3s var(--animation-timing);
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(10px);
         }
 
         .tab-content.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
@@ -347,18 +403,32 @@
             :root {
                 --surface-color: rgba(28, 28, 30, 0.8);
                 --surface-variant: rgba(44, 44, 46, 0.8);
+                --surface-purple: rgba(175, 82, 222, 0.2);
+                --surface-teal: rgba(90, 200, 250, 0.2);
                 --on-surface: #FFFFFF;
+                --on-surface-secondary: #8E8E93;
+                --on-surface-tertiary: #636366;
+                --background-gradient-start: #000000;
+                --background-gradient-end: #1C1C1E;
                 --outline: #8E8E93;
                 --background: #000000;
             }
 
             body {
-                background: linear-gradient(135deg, #000000 0%, #1C1C1E 100%);
+                background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
             }
 
             .text-area {
                 background: rgba(44, 44, 46, 0.8);
                 color: var(--on-surface);
+            }
+
+            .tab:not(.active):hover {
+                background: linear-gradient(135deg, var(--surface-purple) 0%, var(--surface-teal) 100%);
+            }
+
+            .card, .stat-card {
+                background: linear-gradient(135deg, var(--surface-color) 0%, rgba(44, 44, 46, 0.9) 100%);
             }
         }
     </style>
