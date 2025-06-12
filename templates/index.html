@@ -6,21 +6,22 @@
     <title>Text Analysis Tool</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@material/web@1.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <style>
         :root {
-            --md-sys-color-primary: #0066cc;
-            --md-sys-color-on-primary: #ffffff;
-            --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-variant: #f5f5f7;
-            --md-sys-color-on-surface: #1d1d1f;
-            --md-sys-color-outline: #86868b;
+            --mdc-theme-primary: #0066cc;
+            --mdc-theme-on-primary: #ffffff;
+            --mdc-theme-surface: #ffffff;
+            --mdc-theme-surface-variant: #f5f5f7;
+            --mdc-theme-on-surface: #1d1d1f;
+            --mdc-theme-outline: #86868b;
         }
 
         body {
             font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface);
+            background-color: var(--mdc-theme-surface-variant);
+            color: var(--mdc-theme-on-surface);
             margin: 0;
             padding: 0;
             line-height: 1.5;
@@ -42,18 +43,18 @@
             font-size: 32px;
             font-weight: 500;
             margin: 0;
-            color: var(--md-sys-color-on-surface);
+            color: var(--mdc-theme-on-surface);
         }
 
         .mdc-tab-bar {
             margin-bottom: 24px;
-            background-color: var(--md-sys-color-surface);
+            background-color: var(--mdc-theme-surface);
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .mdc-card {
-            background-color: var(--md-sys-color-surface);
+            background-color: var(--mdc-theme-surface);
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             margin-bottom: 24px;
@@ -96,7 +97,7 @@
         }
 
         .stat-card {
-            background: var(--md-sys-color-surface);
+            background: var(--mdc-theme-surface);
             padding: 16px;
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -106,7 +107,7 @@
             margin: 0 0 8px 0;
             font-size: 14px;
             font-weight: 500;
-            color: var(--md-sys-color-outline);
+            color: var(--mdc-theme-outline);
         }
 
         .stat-card p {
@@ -118,7 +119,7 @@
         .plot-container {
             text-align: center;
             margin: 24px 0;
-            background: var(--md-sys-color-surface);
+            background: var(--mdc-theme-surface);
             padding: 16px;
             border-radius: 12px;
         }
@@ -130,7 +131,7 @@
         }
 
         .code-block {
-            background: var(--md-sys-color-surface-variant);
+            background: var(--mdc-theme-surface-variant);
             padding: 16px;
             border-radius: 12px;
             font-family: 'SF Mono', 'Roboto Mono', monospace;
@@ -141,7 +142,7 @@
         }
 
         .api-endpoint {
-            background: var(--md-sys-color-surface-variant);
+            background: var(--mdc-theme-surface-variant);
             padding: 12px;
             border-radius: 8px;
             margin: 8px 0;
@@ -157,8 +158,8 @@
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid var(--md-sys-color-surface-variant);
-            border-top-color: var(--md-sys-color-primary);
+            border: 3px solid var(--mdc-theme-surface-variant);
+            border-top-color: var(--mdc-theme-primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
@@ -175,6 +176,14 @@
 
         .mdc-tab-indicator {
             height: 3px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         @media (max-width: 768px) {
@@ -223,102 +232,99 @@
             </div>
         </div>
 
-        <div class="tab-content">
-            <!-- Analyzer Tab -->
-            <div class="tab-pane active" id="analyzer">
-                <div class="mdc-card">
-                    <div class="mdc-card__content">
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
-                            <textarea id="textInput" class="mdc-text-field__input" rows="6" 
-                                placeholder="Enter your text here..."></textarea>
-                        </div>
-                        <button onclick="analyzeText()" class="mdc-button mdc-button--raised">
-                            <span class="mdc-button__ripple"></span>
-                            <span class="mdc-button__label">Analyze Text</span>
-                        </button>
+        <div class="tab-content active" id="analyzer">
+            <div class="mdc-card">
+                <div class="mdc-card__content">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea">
+                        <textarea id="textInput" class="mdc-text-field__input" rows="6" 
+                            placeholder="Enter your text here..."></textarea>
                     </div>
-                </div>
-
-                <div id="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Analyzing text...</p>
-                </div>
-
-                <div id="results" style="display: none;">
-                    <div class="mdc-card">
-                        <div class="mdc-card__header">
-                            <h3>Basic Statistics</h3>
-                        </div>
-                        <div class="mdc-card__content">
-                            <div id="basicStats" class="stats-grid"></div>
-                        </div>
-                    </div>
-
-                    <div class="mdc-card">
-                        <div class="mdc-card__header">
-                            <h3>Sentiment Analysis</h3>
-                        </div>
-                        <div class="mdc-card__content">
-                            <div id="sentimentStats" class="stats-grid"></div>
-                            <div class="plot-container">
-                                <img id="sentimentPlot" alt="Sentiment Distribution">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdc-card">
-                        <div class="mdc-card__header">
-                            <h3>Word Frequency</h3>
-                        </div>
-                        <div class="mdc-card__content">
-                            <div class="plot-container">
-                                <img id="wordFreqPlot" alt="Word Frequency Distribution">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdc-card">
-                        <div class="mdc-card__header">
-                            <h3>Top Bigrams</h3>
-                        </div>
-                        <div class="mdc-card__content">
-                            <div id="bigramsList" class="stats-grid"></div>
-                        </div>
-                    </div>
-
-                    <div class="mdc-card">
-                        <div class="mdc-card__header">
-                            <h3>Part of Speech Distribution</h3>
-                        </div>
-                        <div class="mdc-card__content">
-                            <div id="posTags" class="stats-grid"></div>
-                        </div>
-                    </div>
+                    <button onclick="analyzeText()" class="mdc-button mdc-button--raised">
+                        <span class="mdc-button__ripple"></span>
+                        <span class="mdc-button__label">Analyze Text</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Developer Tab -->
-            <div class="tab-pane" id="developer">
+            <div id="loading">
+                <div class="loading-spinner"></div>
+                <p>Analyzing text...</p>
+            </div>
+
+            <div id="results" style="display: none;">
                 <div class="mdc-card">
                     <div class="mdc-card__header">
-                        <h3>API Documentation</h3>
+                        <h3>Basic Statistics</h3>
                     </div>
                     <div class="mdc-card__content">
-                        <h4>REST API Endpoint</h4>
-                        <div class="api-endpoint">
-                            <strong>POST /analyze</strong><br>
-                            Content-Type: application/json
+                        <div id="basicStats" class="stats-grid"></div>
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Sentiment Analysis</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <div id="sentimentStats" class="stats-grid"></div>
+                        <div class="plot-container">
+                            <img id="sentimentPlot" alt="Sentiment Distribution">
                         </div>
-                        
-                        <h5>Request Format:</h5>
-                        <div class="code-block">
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Word Frequency</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <div class="plot-container">
+                            <img id="wordFreqPlot" alt="Word Frequency Distribution">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Top Bigrams</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <div id="bigramsList" class="stats-grid"></div>
+                    </div>
+                </div>
+
+                <div class="mdc-card">
+                    <div class="mdc-card__header">
+                        <h3>Part of Speech Distribution</h3>
+                    </div>
+                    <div class="mdc-card__content">
+                        <div id="posTags" class="stats-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="developer">
+            <div class="mdc-card">
+                <div class="mdc-card__header">
+                    <h3>API Documentation</h3>
+                </div>
+                <div class="mdc-card__content">
+                    <h4>REST API Endpoint</h4>
+                    <div class="api-endpoint">
+                        <strong>POST /analyze</strong><br>
+                        Content-Type: application/json
+                    </div>
+                    
+                    <h5>Request Format:</h5>
+                    <div class="code-block">
 {
     "text": "Your text to analyze"
 }
-                        </div>
+                    </div>
 
-                        <h5>Response Format:</h5>
-                        <div class="code-block">
+                    <h5>Response Format:</h5>
+                    <div class="code-block">
 {
     "basic_stats": {
         "Total Characters": int,
@@ -346,17 +352,17 @@
     "word_freq_plot": "base64_encoded_image",
     "sentiment_plot": "base64_encoded_image"
 }
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="mdc-card">
-                    <div class="mdc-card__header">
-                        <h3>Python Integration</h3>
-                    </div>
-                    <div class="mdc-card__content">
-                        <h4>Using the TextAnalyzer Class</h4>
-                        <div class="code-block">
+            <div class="mdc-card">
+                <div class="mdc-card__header">
+                    <h3>Python Integration</h3>
+                </div>
+                <div class="mdc-card__content">
+                    <h4>Using the TextAnalyzer Class</h4>
+                    <div class="code-block">
 from text_analyzer import TextAnalyzer
 
 # Initialize analyzer
@@ -376,28 +382,28 @@ bigrams = analyzer.get_ngrams(n=2, top_n=10)
 
 # Get POS tags
 pos_tags = analyzer.get_pos_tags()
-                        </div>
-
-                        <h4>Data Processing Pipeline</h4>
-                        <p>The text analysis pipeline includes the following steps:</p>
-                        <ol>
-                            <li>Text tokenization using NLTK's word_tokenize</li>
-                            <li>Sentence segmentation using NLTK's sent_tokenize</li>
-                            <li>Stop word removal and punctuation filtering</li>
-                            <li>Part-of-speech tagging using NLTK's averaged_perceptron_tagger</li>
-                            <li>Sentiment analysis using TextBlob</li>
-                            <li>N-gram generation and frequency counting</li>
-                        </ol>
                     </div>
+
+                    <h4>Data Processing Pipeline</h4>
+                    <p>The text analysis pipeline includes the following steps:</p>
+                    <ol>
+                        <li>Text tokenization using NLTK's word_tokenize</li>
+                        <li>Sentence segmentation using NLTK's sent_tokenize</li>
+                        <li>Stop word removal and punctuation filtering</li>
+                        <li>Part-of-speech tagging using NLTK's averaged_perceptron_tagger</li>
+                        <li>Sentiment analysis using TextBlob</li>
+                        <li>N-gram generation and frequency counting</li>
+                    </ol>
                 </div>
+            </div>
 
-                <div class="mdc-card">
-                    <div class="mdc-card__header">
-                        <h3>Data Export</h3>
-                    </div>
-                    <div class="mdc-card__content">
-                        <h4>Exporting Analysis Results</h4>
-                        <div class="code-block">
+            <div class="mdc-card">
+                <div class="mdc-card__header">
+                    <h3>Data Export</h3>
+                </div>
+                <div class="mdc-card__content">
+                    <h4>Exporting Analysis Results</h4>
+                    <div class="code-block">
 import json
 import pandas as pd
 
@@ -408,31 +414,27 @@ with open('analysis_results.json', 'w') as f:
 # Export as CSV (for word frequency)
 word_freq_df = pd.DataFrame.from_dict(word_freq, orient='index', columns=['frequency'])
 word_freq_df.to_csv('word_frequency.csv')
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@material/web@1.0.0/dist/material-components-web.min.js"></script>
     <script>
         // Initialize Material Components
-        mdc.autoInit();
-
-        // Tab switching logic
-        const tabs = document.querySelectorAll('.mdc-tab');
-        const tabPanes = document.querySelectorAll('.tab-pane');
-
-        tabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                // Update tab states
-                tabs.forEach(t => t.classList.remove('mdc-tab--active'));
-                tab.classList.add('mdc-tab--active');
-
-                // Update tab content
-                tabPanes.forEach(pane => pane.classList.remove('active'));
-                tabPanes[index].classList.add('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all MDC components
+            mdc.autoInit();
+            
+            // Initialize tabs
+            const tabBar = new mdc.tabBar.MDCTabBar(document.querySelector('.mdc-tab-bar'));
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBar.listen('MDCTabBar:activated', function(event) {
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.remove('active'));
+                // Show the selected tab content
+                tabContents[event.detail.index].classList.add('active');
             });
         });
 
