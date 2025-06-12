@@ -76,7 +76,7 @@ class TextAnalyzer:
         ax.set_title(f'Top {top_n} Most Common Words')
         plt.xticks(rotation=45)
         plt.tight_layout()
-        return plt
+        return fig
     
     def plot_sentiment_distribution(self):
         """Plot sentiment distribution across sentences and return the figure object"""
@@ -88,7 +88,7 @@ class TextAnalyzer:
         ax.set_xlabel('Sentiment Polarity')
         ax.set_ylabel('Frequency')
         plt.tight_layout()
-        return plt
+        return fig
 
 def analyze_text(text):
     """Main function to analyze text and return all statistics"""
