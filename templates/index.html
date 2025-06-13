@@ -481,6 +481,15 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <h3>Readability Analysis</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="readabilityStats" class="stats-grid"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
                         <h3>Word Frequency</h3>
                     </div>
                     <div class="card-content">
@@ -699,6 +708,16 @@ word_freq_df.to_csv('word_frequency.csv')
                     </div>
                 `).join('');
             updateElement('sentimentStats', sentimentHtml);
+
+            // Display readability stats
+            const readabilityHtml = Object.entries(data.readability)
+                .map(([key, value]) => `
+                    <div class="stat-card">
+                        <h4>${key}</h4>
+                        <p>${typeof value === 'number' ? value.toFixed(1) : value}</p>
+                    </div>
+                `).join('');
+            updateElement('readabilityStats', readabilityHtml);
 
             // Display word frequency
             const wordFreqHtml = Object.entries(data.word_freq)
