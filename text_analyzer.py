@@ -179,21 +179,88 @@ class TextAnalyzer:
         ax.set_ylabel('Frequency')
         plt.tight_layout()
         return fig
+    
+    def get_readability_metrics(self):
+        """Calculate various readability metrics for the text"""
+        if not self.sentences or not self.tokens:
+            return {
+                'Flesch Reading Ease': 0,
+                'Flesch-Kincaid Grade': 0,
+                'Lexical Diversity': 0,
+                'Complex Words': 0
+            }
+            
+        # Calculate average sentence length
+        avg_sentence_length = len(self.tokens) / len(self.sentences)
+        
+        # Calculate average syllables per word
+        def count_syllables(word):
+            word = word.lower()
+            count = 0
+            vowels = "aeiouy"
+            previous_is_vowel = False
+            for char in word:
+                is_vowel = char in vowels
+                if is_vowel and not previous_is_vowel:
+                    count += 1
+                previous_is_vowel = is_vowel
+            if word.endswith("e"):
+                count -= 1
+            return max(1, count)
+            
+        total_syllables = sum(count_syllables(word) for word in self.tokens)
+        avg_syllables = total_syllables / len(self.tokens)
+        
+        # Calculate Flesch Reading Ease Score
+        flesch_score = 206.835 - (1.015 * avg_sentence_length) - (84.6 * avg_syllables)
+        
+        # Calculate Flesch-Kincaid Grade Level
+        fk_grade = 0.39 * avg_sentence_length + 11.8 * avg_syllables - 15.59
+        
+        # Calculate Lexical Diversity (Type-Token Ratio)
+        unique_words = len(set(self.tokens))
+        total_words = len(self.tokens)
+        lexical_diversity = (unique_words / total_words) * 100 if total_words > 0 else 0
+        
+        # Count complex words (words with more than 2 syllables)
+        complex_words = sum(1 for word in self.tokens if count_syllables(word) > 2)
+        complex_word_percentage = (complex_words / total_words) * 100 if total_words > 0 else 0
+        
+        return {
+            'Flesch Reading Ease': round(flesch_score, 1),
+            'Flesch-Kincaid Grade': round(fk_grade, 1),
+            'Lexical Diversity': round(lexical_diversity, 1),
+            'Complex Words': round(complex_word_percentage, 1)
+        }
 
 def analyze_text(text):
     """Main function to analyze text and return all statistics"""
     analyzer = TextAnalyzer(text)
     
     analysis_results = {
-        'Basic Statistics': analyzer.get_basic_stats(),
-        'Sentiment Analysis': analyzer.get_sentiment_analysis(),
-        'Top 10 Words': analyzer.get_word_frequency(10),
-        'Top 10 Bigrams': analyzer.get_ngrams(2, 10)
+        'basic_stats': analyzer.get_basic_stats(),
+        'sentiment': analyzer.get_sentiment_analysis(),
+        'word_freq': analyzer.get_word_frequency(10),
+        'bigrams': analyzer.get_ngrams(2, 10),
+        'readability': analyzer.get_readability_metrics()
     }
     
     # Generate plots
-    analyzer.plot_word_frequency()
-    analyzer.plot_sentiment_distribution()
+    word_freq_fig = analyzer.plot_word_frequency()
+    sentiment_fig = analyzer.plot_sentiment_distribution()
+    
+    # Convert plots to base64
+    import io
+    import base64
+    
+    def fig_to_base64(fig):
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', bbox_inches='tight')
+        buf.seek(0)
+        return base64.b64encode(buf.getvalue()).decode('utf-8')
+    
+    analysis_results['word_freq_plot'] = fig_to_base64(word_freq_fig)
+    analysis_results['sentiment_plot'] = fig_to_base64(sentiment_fig)
     
     return analysis_results
 
