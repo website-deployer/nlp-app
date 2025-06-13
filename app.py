@@ -42,7 +42,7 @@ def analyze():
         word_freq = analyzer.get_word_frequency(top_n=20)
         bigrams = analyzer.get_ngrams(n=2, top_n=10)
         bigrams_str_keys = {' '.join(bigram): count for bigram, count in bigrams.items()}
-        pos_tags = analyzer.get_pos_tags()
+        readability = analyzer.get_readability_metrics()
 
         # Generate plots
         word_freq_plot = get_plot_as_base64(analyzer.plot_word_frequency())
@@ -53,7 +53,7 @@ def analyze():
             'sentiment': sentiment,
             'word_freq': word_freq,
             'bigrams': bigrams_str_keys,
-            'pos_tags': pos_tags,
+            'readability': readability,
             'word_freq_plot': word_freq_plot,
             'sentiment_plot': sentiment_plot
         })
