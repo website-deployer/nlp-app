@@ -182,7 +182,12 @@ class TextAnalyzer:
     
     def get_readability_metrics(self):
         """Calculate various readability metrics for the text"""
-        if not self.sentences or not self.tokens:
+        # Get meaningful words (excluding stopwords and single characters)
+        meaningful_words = [word for word in self.tokens 
+                          if word not in self.stop_words 
+                          and len(word) > 1]
+        
+        if not meaningful_words or not self.sentences:
             return {
                 'Flesch Reading Ease': 0,
                 'Flesch-Kincaid Grade': 0,
@@ -190,8 +195,8 @@ class TextAnalyzer:
                 'Complex Words': 0
             }
             
-        # Calculate average sentence length
-        avg_sentence_length = len(self.tokens) / len(self.sentences)
+        # Calculate average sentence length using meaningful words
+        avg_sentence_length = len(meaningful_words) / len(self.sentences)
         
         # Calculate average syllables per word
         def count_syllables(word):
@@ -208,22 +213,24 @@ class TextAnalyzer:
                 count -= 1
             return max(1, count)
             
-        total_syllables = sum(count_syllables(word) for word in self.tokens)
-        avg_syllables = total_syllables / len(self.tokens)
+        total_syllables = sum(count_syllables(word) for word in meaningful_words)
+        avg_syllables = total_syllables / len(meaningful_words)
         
-        # Calculate Flesch Reading Ease Score
+        # Calculate Flesch Reading Ease Score (0-100, higher is easier to read)
         flesch_score = 206.835 - (1.015 * avg_sentence_length) - (84.6 * avg_syllables)
+        flesch_score = max(0, min(100, flesch_score))  # Clamp between 0 and 100
         
-        # Calculate Flesch-Kincaid Grade Level
+        # Calculate Flesch-Kincaid Grade Level (0-12, represents US grade level)
         fk_grade = 0.39 * avg_sentence_length + 11.8 * avg_syllables - 15.59
+        fk_grade = max(0, min(12, fk_grade))  # Clamp between 0 and 12
         
         # Calculate Lexical Diversity (Type-Token Ratio)
-        unique_words = len(set(self.tokens))
-        total_words = len(self.tokens)
+        unique_words = len(set(meaningful_words))
+        total_words = len(meaningful_words)
         lexical_diversity = (unique_words / total_words) * 100 if total_words > 0 else 0
         
         # Count complex words (words with more than 2 syllables)
-        complex_words = sum(1 for word in self.tokens if count_syllables(word) > 2)
+        complex_words = sum(1 for word in meaningful_words if count_syllables(word) > 2)
         complex_word_percentage = (complex_words / total_words) * 100 if total_words > 0 else 0
         
         return {
