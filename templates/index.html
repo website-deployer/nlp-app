@@ -102,7 +102,9 @@
             margin-bottom: 32px;
             overflow: hidden;
             padding: 8px;
-            position: relative;
+            position: sticky;
+            top: 16px;
+            z-index: 1000;
         }
 
         .tab {
@@ -429,6 +431,10 @@
             .card, .stat-card {
                 background: linear-gradient(135deg, var(--surface-color) 0%, rgba(44, 44, 46, 0.9) 100%);
             }
+
+            .tabs {
+                background: linear-gradient(135deg, var(--surface-variant) 0%, rgba(44, 44, 46, 0.9) 100%);
+            }
         }
     </style>
 </head>
@@ -506,15 +512,6 @@
                     </div>
                     <div class="card-content">
                         <div id="bigramsList" class="stats-grid"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Part of Speech Distribution</h3>
-                    </div>
-                    <div class="card-content">
-                        <div id="posTags" class="stats-grid"></div>
                     </div>
                 </div>
             </div>
