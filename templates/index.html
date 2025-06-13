@@ -690,7 +690,7 @@ word_freq_df.to_csv('word_frequency.csv')
             }
 
             // Display basic stats
-            const basicStatsHtml = Object.entries(data.basic_stats)
+            const basicStatsHtml = Object.entries(data.basic_stats || {})
                 .map(([key, value]) => `
                     <div class="stat-card">
                         <h4>${key}</h4>
@@ -700,7 +700,7 @@ word_freq_df.to_csv('word_frequency.csv')
             updateElement('basicStats', basicStatsHtml);
 
             // Display sentiment stats
-            const sentimentHtml = Object.entries(data.sentiment)
+            const sentimentHtml = Object.entries(data.sentiment || {})
                 .map(([key, value]) => `
                     <div class="stat-card">
                         <h4>${key}</h4>
@@ -710,7 +710,7 @@ word_freq_df.to_csv('word_frequency.csv')
             updateElement('sentimentStats', sentimentHtml);
 
             // Display readability stats
-            const readabilityHtml = Object.entries(data.readability)
+            const readabilityHtml = Object.entries(data.readability || {})
                 .map(([key, value]) => `
                     <div class="stat-card">
                         <h4>${key}</h4>
@@ -720,7 +720,7 @@ word_freq_df.to_csv('word_frequency.csv')
             updateElement('readabilityStats', readabilityHtml);
 
             // Display word frequency
-            const wordFreqHtml = Object.entries(data.word_freq)
+            const wordFreqHtml = Object.entries(data.word_freq || {})
                 .map(([word, data]) => `
                     <div class="stat-card">
                         <h4>${word}</h4>
@@ -730,7 +730,7 @@ word_freq_df.to_csv('word_frequency.csv')
             updateElement('wordFreqList', wordFreqHtml);
 
             // Display bigrams
-            const bigramsHtml = Object.entries(data.bigrams)
+            const bigramsHtml = Object.entries(data.bigrams || {})
                 .map(([bigram, data]) => `
                     <div class="stat-card">
                         <h4>${bigram}</h4>
@@ -742,8 +742,8 @@ word_freq_df.to_csv('word_frequency.csv')
             // Display plots
             const wordFreqPlot = document.getElementById('wordFreqPlot');
             const sentimentPlot = document.getElementById('sentimentPlot');
-            if (wordFreqPlot) wordFreqPlot.src = `data:image/png;base64,${data.word_freq_plot}`;
-            if (sentimentPlot) sentimentPlot.src = `data:image/png;base64,${data.sentiment_plot}`;
+            if (wordFreqPlot && data.word_freq_plot) wordFreqPlot.src = `data:image/png;base64,${data.word_freq_plot}`;
+            if (sentimentPlot && data.sentiment_plot) sentimentPlot.src = `data:image/png;base64,${data.sentiment_plot}`;
 
             // Show results section
             const results = document.getElementById('results');
