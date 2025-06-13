@@ -484,6 +484,7 @@
                         <h3>Word Frequency</h3>
                     </div>
                     <div class="card-content">
+                        <div id="wordFreqList" class="stats-grid"></div>
                         <div class="plot-container">
                             <img id="wordFreqPlot" alt="Word Frequency Distribution">
                         </div>
@@ -671,6 +672,14 @@ word_freq_df.to_csv('word_frequency.csv')
         }
 
         function displayResults(data) {
+            // Helper function to safely update element content
+            function updateElement(id, content) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = content;
+                }
+            }
+
             // Display basic stats
             const basicStatsHtml = Object.entries(data.basic_stats)
                 .map(([key, value]) => `
@@ -679,7 +688,7 @@ word_freq_df.to_csv('word_frequency.csv')
                         <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
                     </div>
                 `).join('');
-            document.getElementById('basicStats').innerHTML = basicStatsHtml;
+            updateElement('basicStats', basicStatsHtml);
 
             // Display sentiment stats
             const sentimentHtml = Object.entries(data.sentiment)
@@ -689,7 +698,7 @@ word_freq_df.to_csv('word_frequency.csv')
                         <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
                     </div>
                 `).join('');
-            document.getElementById('sentimentStats').innerHTML = sentimentHtml;
+            updateElement('sentimentStats', sentimentHtml);
 
             // Display word frequency
             const wordFreqHtml = Object.entries(data.word_freq)
@@ -699,7 +708,7 @@ word_freq_df.to_csv('word_frequency.csv')
                         <p>Count: ${data.count} (${data.percentage}%)</p>
                     </div>
                 `).join('');
-            document.getElementById('wordFreqList').innerHTML = wordFreqHtml;
+            updateElement('wordFreqList', wordFreqHtml);
 
             // Display bigrams
             const bigramsHtml = Object.entries(data.bigrams)
@@ -709,13 +718,17 @@ word_freq_df.to_csv('word_frequency.csv')
                         <p>Count: ${data.count} (${data.percentage}%)</p>
                     </div>
                 `).join('');
-            document.getElementById('bigramsList').innerHTML = bigramsHtml;
+            updateElement('bigramsList', bigramsHtml);
 
             // Display plots
-            document.getElementById('wordFreqPlot').src = `data:image/png;base64,${data.word_freq_plot}`;
-            document.getElementById('sentimentPlot').src = `data:image/png;base64,${data.sentiment_plot}`;
+            const wordFreqPlot = document.getElementById('wordFreqPlot');
+            const sentimentPlot = document.getElementById('sentimentPlot');
+            if (wordFreqPlot) wordFreqPlot.src = `data:image/png;base64,${data.word_freq_plot}`;
+            if (sentimentPlot) sentimentPlot.src = `data:image/png;base64,${data.sentiment_plot}`;
 
-            document.getElementById('results').style.display = 'block';
+            // Show results section
+            const results = document.getElementById('results');
+            if (results) results.style.display = 'block';
         }
     </script>
 </body>
