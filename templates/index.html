@@ -1,866 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Analysis Tool | Free Online NLP App</title>
-    <meta name="description" content="Analyze your text for sentiment, readability, word frequency, and more with this free online NLP tool. Fast, accurate, and privacy-friendly.">
-    <meta name="keywords" content="NLP, text analysis, sentiment, readability, word frequency, bigrams, online tool, free">
-    <meta property="og:title" content="Text Analysis Tool | Free Online NLP App">
-    <meta property="og:description" content="Analyze your text for sentiment, readability, word frequency, and more with this free online NLP tool.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ url_for('static', filename='logo.png') }}">
-    <meta property="og:url" content="{{ request.url_root }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1299593309391762"
-     crossorigin="anonymous"></script>
-    <style>
-        :root {
-            /* Primary Colors */
-            --primary-color: #007AFF;
-            --primary-light: #47A3FF;
-            --primary-dark: #0055B3;
-            
-            /* Accent Colors */
-            --accent-purple: #AF52DE;
-            --accent-teal: #5AC8FA;
-            --accent-green: #34C759;
-            --accent-orange: #FF9500;
-            
-            /* Surface Colors */
-            --surface-color: rgba(255, 255, 255, 0.8);
-            --surface-variant: rgba(245, 245, 247, 0.8);
-            --surface-purple: rgba(175, 82, 222, 0.1);
-            --surface-teal: rgba(90, 200, 250, 0.1);
-            
-            /* Text Colors */
-            --on-surface: #1D1D1F;
-            --on-surface-secondary: #86868B;
-            --on-surface-tertiary: #8E8E93;
-            
-            /* Background Colors */
-            --background: #F5F5F7;
-            --background-gradient-start: #F5F5F7;
-            --background-gradient-end: #FFFFFF;
-            
-            /* Status Colors */
-            --success: #34C759;
-            --warning: #FF9500;
-            --error: #FF3B30;
-            
-            /* Animation */
-            --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
-            
-            --outline: #86868B;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
-            color: var(--on-surface);
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            transition: background-color 0.3s var(--animation-timing);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 24px;
-            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            transform: translateY(0);
-            transition: transform 0.3s var(--animation-timing);
-        }
-
-        .header:hover {
-            transform: translateY(-2px);
-        }
-
-        .header h1 {
-            font-size: 36px;
-            font-weight: 600;
-            margin: 0;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .tabs {
-            display: flex;
-            background: linear-gradient(135deg, var(--surface-variant) 0%, rgba(245, 245, 247, 0.9) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
-            overflow: hidden;
-            padding: 8px;
-            position: sticky;
-            top: 16px;
-            z-index: 1000;
-        }
-
-        .tab {
-            padding: 16px 24px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--outline);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            border-radius: 12px;
-            margin: 0 4px;
-        }
-
-        .tab.active {
-            color: var(--primary-color);
-            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.95) 100%);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            font-weight: 600;
-        }
-
-        .tab:not(.active):hover {
-            color: var(--on-surface);
-            background: linear-gradient(135deg, rgba(175, 82, 222, 0.1) 0%, rgba(90, 200, 250, 0.1) 100%);
-        }
-
-        .card {
-            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
-            overflow: hidden;
-            transition: all 0.3s var(--animation-timing);
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-content {
-            padding: 32px;
-        }
-
-        .card-header {
-            padding: 24px 32px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .card-header h3 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--on-surface);
-        }
-
-        .text-area {
-            width: 100%;
-            min-height: 150px;
-            padding: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 16px;
-            margin-bottom: 24px;
-            resize: vertical;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px) saturate(180%);
-            -webkit-backdrop-filter: blur(10px) saturate(180%);
-            transition: all 0.3s var(--animation-timing);
-        }
-
-        .text-area:focus {
-            outline: none;
-            border-color: var(--accent-teal);
-            box-shadow: 0 0 0 3px rgba(90, 200, 250, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .button {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s var(--animation-timing);
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
-        }
-
-        .button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
-        }
-
-        .button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        .button:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--surface-color) 0%, rgba(255, 255, 255, 0.9) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s var(--animation-timing);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-        }
-
-        .stat-card:nth-child(1) {
-            border-top: 3px solid var(--accent-purple);
-        }
-
-        .stat-card:nth-child(2) {
-            border-top: 3px solid var(--accent-teal);
-        }
-
-        .stat-card:nth-child(3) {
-            border-top: 3px solid var(--accent-green);
-        }
-
-        .stat-card:nth-child(4) {
-            border-top: 3px solid var(--accent-orange);
-        }
-
-        .stat-card h4 {
-            margin: 0 0 12px 0;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--outline);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card p {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .plot-container {
-            text-align: center;
-            margin: 32px 0;
-            background: var(--surface-color);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 24px;
-            border-radius: 20px;
-        }
-
-        .plot-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .code-block {
-            background: rgba(0, 0, 0, 0.03);
-            padding: 20px;
-            border-radius: 16px;
-            font-family: 'SF Mono', 'Roboto Mono', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-
-        .api-endpoint {
-            background: rgba(0, 0, 0, 0.03);
-            padding: 16px;
-            border-radius: 12px;
-            margin: 12px 0;
-            font-family: 'SF Mono', 'Roboto Mono', monospace;
-        }
-
-        #loading {
-            display: none;
-            text-align: center;
-            margin: 32px 0;
-        }
-
-        .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(0, 122, 255, 0.1);
-            border-top-color: var(--accent-purple);
-            border-radius: 50%;
-            animation: spin 1s var(--animation-timing) infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 28px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .card-content {
-                padding: 20px;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --surface-color: rgba(28, 28, 30, 0.8);
-                --surface-variant: rgba(44, 44, 46, 0.8);
-                --surface-purple: rgba(175, 82, 222, 0.2);
-                --surface-teal: rgba(90, 200, 250, 0.2);
-                --on-surface: #FFFFFF;
-                --on-surface-secondary: #8E8E93;
-                --on-surface-tertiary: #636366;
-                --background-gradient-start: #000000;
-                --background-gradient-end: #1C1C1E;
-                --outline: #8E8E93;
-                --background: #000000;
-            }
-
-            body {
-                background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
-            }
-
-            .text-area {
-                background: rgba(44, 44, 46, 0.8);
-                color: var(--on-surface);
-            }
-
-            .tab:not(.active):hover {
-                background: linear-gradient(135deg, var(--surface-purple) 0%, var(--surface-teal) 100%);
-            }
-
-            .card, .stat-card {
-                background: linear-gradient(135deg, var(--surface-color) 0%, rgba(44, 44, 46, 0.9) 100%);
-            }
-
-            .tabs {
-                background: linear-gradient(135deg, var(--surface-variant) 0%, rgba(44, 44, 46, 0.9) 100%);
-            }
-        }
-        .ad-header, .ad-footer {
-            width: 100%;
-            text-align: center;
-            margin: 0 auto 16px auto;
-            padding: 8px 0;
-            background: #f8f8fa;
-            border-radius: 10px;
-            min-height: 60px;
-            color: #86868B;
-            font-size: 15px;
-        }
-        .ad-sidebar {
-            display: none;
-        }
-        @media (min-width: 1100px) {
-            .layout {
-                display: flex;
-                flex-direction: row;
-            }
-            .main-content {
-                flex: 1;
-            }
-            .ad-sidebar {
-                display: block;
-                width: 180px;
-                margin-left: 24px;
-                background: #f8f8fa;
-                border-radius: 10px;
-                min-height: 400px;
-                text-align: center;
-                color: #86868B;
-                font-size: 15px;
-                padding: 16px 8px;
-                position: sticky;
-                top: 32px;
-                height: fit-content;
-            }
-        }
-    </style>
+    <title>NLP App</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
 </head>
-<body>
-    <nav class="tabs" style="margin-bottom: 32px;">
-        <a href="/" class="tab">Home</a>
-        <a href="/about" class="tab">About</a>
-        <a href="/blog" class="tab">Blog</a>
-        <a href="/contact" class="tab">Contact</a>
-        <a href="/privacy-policy" class="tab">Privacy Policy</a>
-        <a href="/terms-of-service" class="tab">Terms of Service</a>
-    </nav> 
-    <header>
-        <div class="header">
-            <h1>Text Analysis Tool</h1>
-            <p style="font-size: 1.3em; margin-top: 12px; color: var(--on-surface-secondary);">Unlock the power of your words with instant, beautiful NLP insights.</p>
-            <div style="margin-top: 24px;">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 90px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
-            </div>
-        </div>
+<body class="is-preload">
+    <!-- Navigation Bar -->
+    <nav id="navbar">
+        <ul>
+            <li><a href="#analyzer">Analyzer</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms of Service</a></li>
+        </ul>
+    </nav>
+    <!-- Header -->
+    <header id="header">
+        <h1>NLP App</h1>
+        <p>A simple, modern base template for your NLP web application.</p>
     </header>
-    <section class="intro">
-        <div class="card" style="background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-purple) 100%); color: white;">
-            <div class="card-content">
-                <h2 style="font-size: 2.2em; font-weight: 700; margin-bottom: 0.5em;">Analyze Any Text Instantly</h2>
-                <p style="font-size: 1.2em;">Paste your text below and discover sentiment, readability, word stats, and more—free, fast, and privacy-friendly.</p>
-                <ul style="font-size: 1.1em;">
-                    <li>✨ No sign-up required</li>
-                    <li>🔒 100% privacy: your text is never stored</li>
-                    <li>📊 Beautiful, interactive visualizations</li>
-                    <li>🚀 Powered by advanced NLP</li>
-                </ul>
-            </div>
-        </div>
+    <!-- Analyzer Section -->
+    <section id="analyzer">
+        <h2>Text Analyzer</h2>
+        <form id="analyzer-form">
+            <textarea id="analyze-text" placeholder="Paste or type your text here..." rows="6" required></textarea>
+            <button type="submit">Analyze</button>
+        </form>
+        <div id="analyzer-results" style="display:none; margin-top:2rem;"></div>
     </section>
-    <div class="container layout">
-        <main class="main-content">
-            <nav class="tabs">
-                <button class="tab active" onclick="switchTab('analyzer')">Text Analyzer</button>
-                <button class="tab" onclick="switchTab('developer')">Developer Info</button>
-            </nav>
-            <section class="tab-content active" id="analyzer">
-                <div class="card">
-                    <div class="card-content">
-                        <textarea id="textInput" class="text-area" 
-                            placeholder="Enter your text here..."></textarea>
-                        <button onclick="analyzeText()" class="button">Analyze Text</button>
-                    </div>
-                </div>
-                <div id="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Analyzing text...</p>
-                </div>
-                <div id="results" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Basic Statistics</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="basicStats" class="stats-grid"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Sentiment Analysis</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="sentimentStats" class="stats-grid"></div>
-                            <div class="plot-container">
-                                <img id="sentimentPlot" alt="Sentiment Distribution">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Readability Analysis</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="readabilityStats" class="stats-grid"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Word Frequency</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="wordFreqList" class="stats-grid"></div>
-                            <div class="plot-container">
-                                <img id="wordFreqPlot" alt="Word Frequency Distribution">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Top Bigrams</h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="bigramsList" class="stats-grid"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ad-header">
-                    <!-- Hero-Header-Ad (now below main content) -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-1299593309391762"
-                         data-ad-slot="3631506633"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </section>
-            <section class="tab-content" id="developer">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>API Documentation</h3>
-                    </div>
-                    <div class="card-content">
-                        <h4>REST API Endpoint</h4>
-                        <div class="api-endpoint">
-                            <strong>POST /analyze</strong><br>
-                            Content-Type: application/json
-                        </div>
-                        
-                        <h5>Request Format:</h5>
-                        <div class="code-block">
-{
-    "text": "Your text to analyze"
-}
-                        </div>
-
-                        <h5>Response Format:</h5>
-                        <div class="code-block">
-{
-    "basic_stats": {
-        "Total Characters": int,
-        "Total Words": int,
-        "Total Sentences": int,
-        "Average Word Length": float,
-        "Average Sentence Length": float
-    },
-    "sentiment": {
-        "Polarity": float,  // -1 to 1
-        "Subjectivity": float  // 0 to 1
-    },
-    "word_freq": {
-        "word": int,  // frequency count
-        ...
-    },
-    "bigrams": {
-        "('word1', 'word2')": int,  // frequency count
-        ...
-    },
-    "pos_tags": {
-        "TAG": int,  // frequency count
-        ...
-    },
-    "word_freq_plot": "base64_encoded_image",
-    "sentiment_plot": "base64_encoded_image"
-}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Python Integration</h3>
-                    </div>
-                    <div class="card-content">
-                        <h4>Using the TextAnalyzer Class</h4>
-                        <div class="code-block">
-from text_analyzer import TextAnalyzer
-
-# Initialize analyzer
-analyzer = TextAnalyzer("Your text here")
-
-# Get basic statistics
-stats = analyzer.get_basic_stats()
-
-# Get sentiment analysis
-sentiment = analyzer.get_sentiment_analysis()
-
-# Get word frequency
-word_freq = analyzer.get_word_frequency(top_n=10)
-
-# Get n-grams
-bigrams = analyzer.get_ngrams(n=2, top_n=10)
-
-# Get POS tags
-pos_tags = analyzer.get_pos_tags()
-                        </div>
-
-                        <h4>Data Processing Pipeline</h4>
-                        <p>The text analysis pipeline includes the following steps:</p>
-                        <ol>
-                            <li>Text tokenization using NLTK's word_tokenize</li>
-                            <li>Sentence segmentation using NLTK's sent_tokenize</li>
-                            <li>Stop word removal and punctuation filtering</li>
-                            <li>Part-of-speech tagging using NLTK's averaged_perceptron_tagger</li>
-                            <li>Sentiment analysis using TextBlob</li>
-                            <li>N-gram generation and frequency counting</li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Data Export</h3>
-                    </div>
-                    <div class="card-content">
-                        <h4>Exporting Analysis Results</h4>
-                        <div class="code-block">
-import json
-import pandas as pd
-
-# Export as JSON
-with open('analysis_results.json', 'w') as f:
-    json.dump(results, f, indent=2)
-
-# Export as CSV (for word frequency)
-word_freq_df = pd.DataFrame.from_dict(word_freq, orient='index', columns=['frequency'])
-word_freq_df.to_csv('word_frequency.csv')
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <footer>
-                <div class="ad-footer">
-                    <!-- Hero-Header/Footer-Ad (now below main content) -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-1299593309391762"
-                         data-ad-slot="3631506633"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </footer>
-        </main>
-        <aside class="ad-sidebar">
-            <!-- Sidebar-Ad -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-1299593309391762"
-                 data-ad-slot="2825707337"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </aside>
-    </div>
-
+    <!-- About Section -->
+    <section id="about">
+        <h2>About</h2>
+        <p>This free online NLP app helps you analyze your text for sentiment, readability, word frequency, and more. Built with advanced Natural Language Processing techniques, it provides detailed insights and beautiful visualizations to help you understand your text better.</p>
+    </section>
+    <!-- Blog Section -->
+    <section id="blog">
+        <h2>Blog</h2>
+        <p>Coming soon: Articles, updates, and tips on NLP, text analysis, and more.</p>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact</h2>
+        <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="Your Name" required />
+            <input type="email" id="contact-email" placeholder="Your Email" required />
+            <textarea id="contact-message" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <div id="contact-success" style="display:none; margin-top:1rem; color:#34C759;">Thank you for reaching out!</div>
+    </section>
+    <!-- Privacy Policy Section -->
+    <section id="privacy">
+        <h2>Privacy Policy</h2>
+        <p>We respect your privacy. This app does not store your text or analysis results. All processing is done securely and your data is never shared with third parties.</p>
+    </section>
+    <!-- Terms of Service Section -->
+    <section id="terms">
+        <h2>Terms of Service</h2>
+        <p>By using this app, you agree to the following terms: This tool is provided as-is, without warranty of any kind. Do not use this app for illegal or harmful purposes. We reserve the right to update these terms at any time.</p>
+    </section>
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; NLP App.</li>
+        </ul>
+    </footer>
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
     <script>
-        function switchTab(tabId) {
-            // Update tab buttons
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        async function analyzeText() {
-            const text = document.getElementById('textInput').value;
-            if (!text.trim()) {
-                alert('Please enter some text to analyze');
+    // Analyzer form JS
+    document.addEventListener('DOMContentLoaded', function() {
+        const analyzerForm = document.getElementById('analyzer-form');
+        const analyzerResults = document.getElementById('analyzer-results');
+        analyzerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const text = document.getElementById('analyze-text').value.trim();
+            if (!text) {
+                alert('Please enter some text to analyze.');
                 return;
             }
-
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-
+            analyzerResults.style.display = 'block';
+            analyzerResults.innerHTML = '<div style="color:#86868b;">Analyzing...</div>';
             try {
                 const response = await fetch('/analyze', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ text: text })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
                 });
-
                 const data = await response.json();
-                displayResults(data);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while analyzing the text');
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-
-        function displayResults(data) {
-            // Helper function to safely update element content
-            function updateElement(id, content) {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.innerHTML = content;
+                if (data.error) {
+                    analyzerResults.innerHTML = '<div style="color:#FF3B30;">' + data.error + '</div>';
+                } else {
+                    analyzerResults.innerHTML = `
+                        <h3>Basic Stats</h3>
+                        <pre>${JSON.stringify(data.basic_stats, null, 2)}</pre>
+                        <h3>Sentiment</h3>
+                        <pre>${JSON.stringify(data.sentiment, null, 2)}</pre>
+                        <h3>Word Frequency</h3>
+                        <pre>${JSON.stringify(data.word_freq, null, 2)}</pre>
+                        <h3>Bigrams</h3>
+                        <pre>${JSON.stringify(data.bigrams, null, 2)}</pre>
+                        <h3>Readability</h3>
+                        <pre>${JSON.stringify(data.readability, null, 2)}</pre>
+                        <h3>Word Frequency Plot</h3>
+                        <img src="data:image/png;base64,${data.word_freq_plot}" style="max-width:100%;border-radius:1rem;box-shadow:0 2px 8px #ccc;" />
+                        <h3>Sentiment Plot</h3>
+                        <img src="data:image/png;base64,${data.sentiment_plot}" style="max-width:100%;border-radius:1rem;box-shadow:0 2px 8px #ccc;" />
+                    `;
                 }
+            } catch (err) {
+                analyzerResults.innerHTML = '<div style="color:#FF3B30;">An error occurred. Please try again.</div>';
             }
-
-            // Display basic stats
-            const basicStatsHtml = Object.entries(data.basic_stats || {})
-                .map(([key, value]) => `
-                    <div class="stat-card">
-                        <h4>${key}</h4>
-                        <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
-                    </div>
-                `).join('');
-            updateElement('basicStats', basicStatsHtml);
-
-            // Display sentiment stats
-            const sentimentHtml = Object.entries(data.sentiment || {})
-                .map(([key, value]) => `
-                    <div class="stat-card">
-                        <h4>${key}</h4>
-                        <p>${typeof value === 'number' ? value.toFixed(2) : value}</p>
-                    </div>
-                `).join('');
-            updateElement('sentimentStats', sentimentHtml);
-
-            // Display readability stats
-            const readabilityHtml = Object.entries(data.readability || {})
-                .map(([key, value]) => `
-                    <div class="stat-card">
-                        <h4>${key}</h4>
-                        <p>${typeof value === 'number' ? value.toFixed(1) : value}</p>
-                    </div>
-                `).join('');
-            updateElement('readabilityStats', readabilityHtml);
-
-            // Display word frequency
-            const wordFreqHtml = Object.entries(data.word_freq || {})
-                .map(([word, data]) => `
-                    <div class="stat-card">
-                        <h4>${word}</h4>
-                        <p>Count: ${data.count} (${data.percentage}%)</p>
-                    </div>
-                `).join('');
-            updateElement('wordFreqList', wordFreqHtml);
-
-            // Display bigrams
-            const bigramsHtml = Object.entries(data.bigrams || {})
-                .map(([bigram, data]) => `
-                    <div class="stat-card">
-                        <h4>${bigram}</h4>
-                        <p>Count: ${data.count} (${data.percentage}%)</p>
-                    </div>
-                `).join('');
-            updateElement('bigramsList', bigramsHtml);
-
-            // Display plots
-            const wordFreqPlot = document.getElementById('wordFreqPlot');
-            const sentimentPlot = document.getElementById('sentimentPlot');
-            if (wordFreqPlot && data.word_freq_plot) wordFreqPlot.src = `data:image/png;base64,${data.word_freq_plot}`;
-            if (sentimentPlot && data.sentiment_plot) sentimentPlot.src = `data:image/png;base64,${data.sentiment_plot}`;
-
-            // Show results section
-            const results = document.getElementById('results');
-            if (results) results.style.display = 'block';
-        }
+        });
+        // Contact form JS
+        const contactForm = document.getElementById('contact-form');
+        const contactSuccess = document.getElementById('contact-success');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            contactSuccess.style.display = 'block';
+            contactForm.reset();
+        });
+    });
     </script>
 </body>
 </html> 
