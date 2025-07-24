@@ -491,23 +491,37 @@
     </style>
 </head>
 <body>
+    <nav class="tabs" style="margin-bottom: 32px;">
+        <a href="/" class="tab">Home</a>
+        <a href="/about" class="tab">About</a>
+        <a href="/blog" class="tab">Blog</a>
+        <a href="/contact" class="tab">Contact</a>
+        <a href="/privacy-policy" class="tab">Privacy Policy</a>
+        <a href="/terms-of-service" class="tab">Terms of Service</a>
+    </nav> 
     <header>
-        <div class="ad-header">
-            <!-- Hero-Header-Ad -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-1299593309391762"
-                 data-ad-slot="3631506633"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
         <div class="header">
             <h1>Text Analysis Tool</h1>
+            <p style="font-size: 1.3em; margin-top: 12px; color: var(--on-surface-secondary);">Unlock the power of your words with instant, beautiful NLP insights.</p>
+            <div style="margin-top: 24px;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 90px; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+            </div>
         </div>
     </header>
+    <section class="intro">
+        <div class="card" style="background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-purple) 100%); color: white;">
+            <div class="card-content">
+                <h2 style="font-size: 2.2em; font-weight: 700; margin-bottom: 0.5em;">Analyze Any Text Instantly</h2>
+                <p style="font-size: 1.2em;">Paste your text below and discover sentiment, readability, word stats, and more—free, fast, and privacy-friendly.</p>
+                <ul style="font-size: 1.1em;">
+                    <li>✨ No sign-up required</li>
+                    <li>🔒 100% privacy: your text is never stored</li>
+                    <li>📊 Beautiful, interactive visualizations</li>
+                    <li>🚀 Powered by advanced NLP</li>
+                </ul>
+            </div>
+        </div>
+    </section>
     <div class="container layout">
         <main class="main-content">
             <nav class="tabs">
@@ -577,6 +591,18 @@
                             <div id="bigramsList" class="stats-grid"></div>
                         </div>
                     </div>
+                </div>
+                <div class="ad-header">
+                    <!-- Hero-Header-Ad (now below main content) -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1299593309391762"
+                         data-ad-slot="3631506633"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </section>
             <section class="tab-content" id="developer">
@@ -695,7 +721,7 @@ word_freq_df.to_csv('word_frequency.csv')
             </section>
             <footer>
                 <div class="ad-footer">
-                    <!-- Hero-Header/Footer-Ad -->
+                    <!-- Hero-Header/Footer-Ad (now below main content) -->
                     <ins class="adsbygoogle"
                          style="display:block"
                          data-ad-client="ca-pub-1299593309391762"

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | Text Analysis Tool</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <style>{% include 'index.html' %}</style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="header">
+            <h1>Terms of Service</h1>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h2>Terms of Use</h2>
+                <p>By using this app, you agree to the following terms:</p>
+                <ul>
+                    <li>This tool is provided as-is, without warranty of any kind.</li>
+                    <li>Do not use this app for illegal or harmful purposes.</li>
+                    <li>We reserve the right to update these terms at any time.</li>
+                </ul>
+                <h3>Limitation of Liability</h3>
+                <p>We are not liable for any damages or losses resulting from the use of this app.</p>
+                <h3>Contact</h3>
+                <p>If you have questions about these terms, please <a href="/contact">contact us</a>.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

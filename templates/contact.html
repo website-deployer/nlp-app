@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Text Analysis Tool</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <style>{% include 'index.html' %}</style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="header">
+            <h1>Contact Us</h1>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h2>Get in Touch</h2>
+                <p>Have questions, feedback, or suggestions? Reach out to us!</p>
+                <ul>
+                    <li>Email: <a href="mailto:info@nlpapp.com">info@nlpapp.com</a></li>
+                </ul>
+                <h3>Contact Form</h3>
+                <form>
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" class="text-area"><br><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" class="text-area"><br><br>
+                    <label for="message">Message:</label><br>
+                    <textarea id="message" name="message" class="text-area"></textarea><br><br>
+                    <button type="submit" class="button">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

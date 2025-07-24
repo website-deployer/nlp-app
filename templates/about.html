@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Text Analysis Tool</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <style>{% include 'index.html' %}</style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="header">
+            <h1>About This App</h1>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h2>What is the Text Analysis Tool?</h2>
+                <p>This free online NLP app helps you analyze your text for sentiment, readability, word frequency, and more. Built with advanced Natural Language Processing techniques, it provides detailed insights and beautiful visualizations to help you understand your text better.</p>
+                <h3>Our Mission</h3>
+                <p>To make powerful text analysis accessible to everyone, for free, with privacy and ease of use as top priorities.</p>
+                <h3>Features</h3>
+                <ul>
+                    <li>Sentiment analysis</li>
+                    <li>Readability metrics</li>
+                    <li>Word frequency and bigrams</li>
+                    <li>Beautiful, interactive visualizations</li>
+                    <li>Export options for your data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
