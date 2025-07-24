@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | Text Analysis Tool</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <style>{% include 'index.html' %}</style>
+    <title>Blog | NLP App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    {% include 'navbar.html' %}
-    <div class="container">
-        <div class="header">
-            <h1>Blog</h1>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <h2>Coming Soon!</h2>
-                <p>Stay tuned for articles, updates, and tips on NLP, text analysis, and more.</p>
-            </div>
-        </div>
-    </div>
+    <header id="header">
+        <h1>Blog</h1>
+        <p>Stay tuned for articles, updates, and tips on NLP, text analysis, and more!</p>
+    </header>
+    <section>
+        <h2>Coming Soon!</h2>
+        <p>Our blog will feature the latest in NLP, AI, and text analytics, plus app updates and community stories.</p>
+        <a href="/" style="text-decoration:none;"><button>Back to Home</button></a>
+    </section>
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; NLP App.</li>
+        </ul>
+    </footer>
 </body>
 </html> 

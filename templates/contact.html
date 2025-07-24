@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Text Analysis Tool</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <style>{% include 'index.html' %}</style>
+    <title>Contact | NLP App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    {% include 'navbar.html' %}
-    <div class="container">
-        <div class="header">
-            <h1>Contact Us</h1>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <h2>Get in Touch</h2>
-                <p>Have questions, feedback, or suggestions? Reach out to us!</p>
-                <ul>
-                    <li>Email: <a href="mailto:info@nlpapp.com">info@nlpapp.com</a></li>
-                </ul>
-                <h3>Contact Form</h3>
-                <form>
-                    <label for="name">Name:</label><br>
-                    <input type="text" id="name" name="name" class="text-area"><br><br>
-                    <label for="email">Email:</label><br>
-                    <input type="email" id="email" name="email" class="text-area"><br><br>
-                    <label for="message">Message:</label><br>
-                    <textarea id="message" name="message" class="text-area"></textarea><br><br>
-                    <button type="submit" class="button">Send</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    <header id="header">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you! Reach out with questions, feedback, or just to say hi.</p>
+    </header>
+    <section>
+        <h2>Contact Form</h2>
+        <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="Your Name" required />
+            <input type="email" id="contact-email" placeholder="Your Email" required />
+            <textarea id="contact-message" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <div id="contact-success" style="display:none; margin-top:1rem; color:#34C759;">Thank you for reaching out!</div>
+        <a href="/" style="text-decoration:none;"><button style="margin-top:2em;">Back to Home</button></a>
+    </section>
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; NLP App.</li>
+        </ul>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contact-form');
+        const contactSuccess = document.getElementById('contact-success');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            contactSuccess.style.display = 'block';
+            contactForm.reset();
+        });
+    });
+    </script>
 </body>
 </html> 

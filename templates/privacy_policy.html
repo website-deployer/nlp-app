@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | Text Analysis Tool</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <style>{% include 'index.html' %}</style>
+    <title>Privacy Policy | NLP App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    {% include 'navbar.html' %}
-    <div class="container">
-        <div class="header">
-            <h1>Privacy Policy</h1>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <h2>Your Privacy Matters</h2>
-                <p>We respect your privacy. This app does not store your text or analysis results. All processing is done securely and your data is never shared with third parties.</p>
-                <h3>Information We Collect</h3>
-                <ul>
-                    <li>We do not collect or store any personal information.</li>
-                    <li>Text submitted for analysis is processed in-memory and not saved.</li>
-                </ul>
-                <h3>Third-Party Services</h3>
-                <p>We use Google AdSense for ads. Please refer to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> for more information.</p>
-                <h3>Contact</h3>
-                <p>If you have questions about this policy, please <a href="/contact">contact us</a>.</p>
-            </div>
-        </div>
-    </div>
+    <header id="header">
+        <h1>Privacy Policy</h1>
+        <p>Your privacy is important to us. Learn how we protect your data.</p>
+    </header>
+    <section>
+        <h2>Our Commitment</h2>
+        <p>We respect your privacy. This app does not store your text or analysis results. All processing is done securely and your data is never shared with third parties.</p>
+        <h2>Third-Party Services</h2>
+        <p>We use Google AdSense for ads. Please refer to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> for more information.</p>
+        <a href="/" style="text-decoration:none;"><button>Back to Home</button></a>
+    </section>
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; NLP App.</li>
+        </ul>
+    </footer>
 </body>
 </html> 

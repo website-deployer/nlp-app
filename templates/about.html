@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | Text Analysis Tool</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <style>{% include 'index.html' %}</style>
+    <title>About | NLP App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    {% include 'navbar.html' %}
-    <div class="container">
-        <div class="header">
-            <h1>About This App</h1>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <h2>What is the Text Analysis Tool?</h2>
-                <p>This free online NLP app helps you analyze your text for sentiment, readability, word frequency, and more. Built with advanced Natural Language Processing techniques, it provides detailed insights and beautiful visualizations to help you understand your text better.</p>
-                <h3>Our Mission</h3>
-                <p>To make powerful text analysis accessible to everyone, for free, with privacy and ease of use as top priorities.</p>
-                <h3>Features</h3>
-                <ul>
-                    <li>Sentiment analysis</li>
-                    <li>Readability metrics</li>
-                    <li>Word frequency and bigrams</li>
-                    <li>Beautiful, interactive visualizations</li>
-                    <li>Export options for your data</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <header id="header">
+        <h1>About NLP App</h1>
+        <p>Discover the story and mission behind our bubbly, visual NLP platform.</p>
+    </header>
+    <section>
+        <h2>Our Mission</h2>
+        <p>We believe in making advanced Natural Language Processing accessible, fun, and visually delightful for everyone. Our app combines powerful analytics with a playful, modern design to help you understand your text like never before.</p>
+        <h2>Features</h2>
+        <ul>
+            <li>Sentiment analysis</li>
+            <li>Readability metrics</li>
+            <li>Word frequency and bigrams</li>
+            <li>Beautiful, interactive visualizations</li>
+            <li>Export options for your data</li>
+        </ul>
+        <a href="/" style="text-decoration:none;"><button>Back to Home</button></a>
+    </section>
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; NLP App.</li>
+        </ul>
+    </footer>
 </body>
 </html> 
